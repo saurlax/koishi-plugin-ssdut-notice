@@ -33,7 +33,7 @@ export interface SSDUTNotice {
   title: string;
 }
 
-async function update(ctx: Context, count: number = 0) {
+async function update(ctx: Context) {
   const noticesFetched: SSDUTNotice[] = [];
   for (const src of sources) {
     const resp = await fetch(src.url);
@@ -45,7 +45,7 @@ async function update(ctx: Context, count: number = 0) {
     noticesFetched.push(...items);
   }
 
-  let noticesFiltered: SSDUTNotice[] = [];
+  const noticesFiltered: SSDUTNotice[] = [];
 
   for (const notice of noticesFetched) {
     const noticesStored = await ctx.database.get("ssdut-notice", {
@@ -57,21 +57,12 @@ async function update(ctx: Context, count: number = 0) {
     }
   }
 
-  if (count) {
-    noticesFiltered = await ctx.database.get(
-      "ssdut-notice",
-      {},
-      { limit: count, sort: { id: "desc" } }
-    );
-  }
-
-  let message = noticesFiltered
+  const message = noticesFiltered
     .map((notice) => {
       return notice.title + "\n" + notice.url;
     })
     .join("\n\n");
 
-  if (!message) message = "暂无新通知";
   return message;
 }
 
@@ -85,15 +76,33 @@ export function apply(ctx: Context, config: Config) {
   if (config.alert) {
     ctx.cron("0 * * * *", async () => {
       const message = await update(ctx);
-      const bot = ctx.bots[`${config.platform}:${config.selfId}`];
-      for (const group of config.groups) {
-        bot.sendMessage(group, message);
+      if (message) {
+        const bot = ctx.bots[`${config.platform}:${config.selfId}`];
+        for (const group of config.groups) {
+          bot.sendMessage(group, message);
+        }
       }
     });
   }
 
   ctx
     .command("ssdut-notice [count:number]", "获取大工开发区通知")
-    .usage("获取最近 count 条通知，缺省则只获取新通知")
-    .action((_, count) => update(ctx, count));
+    .usage("获取最近 count 条通知")
+    .action(async (_, count = 5) => {
+      count = count > 20 ? 20 : count;
+
+      const notices = await ctx.database.get(
+        "ssdut-notice",
+        {},
+        { limit: count, sort: { id: "desc" } }
+      );
+
+      let message = notices
+        .map((notice) => {
+          return notice.title + "\n" + notice.url;
+        })
+        .join("\n\n");
+
+      return message;
+    });
 }
