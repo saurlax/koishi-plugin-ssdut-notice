@@ -73,17 +73,15 @@ export function apply(ctx: Context, config: Config) {
     title: "string",
   });
 
-  if (config.alert) {
-    ctx.cron("0 * * * *", async () => {
-      const message = await update(ctx);
-      if (message) {
-        const bot = ctx.bots[`${config.platform}:${config.selfId}`];
-        for (const group of config.groups) {
-          bot.sendMessage(group, message);
-        }
+  ctx.cron("0 * * * *", async () => {
+    const message = await update(ctx);
+    if (config.alert && message) {
+      const bot = ctx.bots[`${config.platform}:${config.selfId}`];
+      for (const group of config.groups) {
+        bot.sendMessage(group, message);
       }
-    });
-  }
+    }
+  });
 
   ctx
     .command("ssdut-notice [count:number]", "获取大工开发区通知")
