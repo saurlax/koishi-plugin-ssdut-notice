@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-ssdut-notice",
   "description": "Automatically push notifications for SSDUT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -19,6 +19,10 @@
     "koishi": "^4.17.11"
   },
   "koishi": {
+    "description": {
+      "en": "Automatically push notifications for SSDUT",
+      "zh": "自动推送大工开发区通知"
+    },
     "service": {
       "required": [
         "database",
