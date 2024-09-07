@@ -83,7 +83,7 @@ export function apply(ctx: Context, config: Config) {
   });
 
   if (config.alert) {
-    ctx.cron("* * * * *", async () => {
+    ctx.cron("0 * * * *", async () => {
       const message = await update(ctx);
       const bot = ctx.bots[`${config.platform}:${config.selfId}`];
       for (const group of config.groups) {
