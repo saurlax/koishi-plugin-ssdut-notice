@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-ssdut-notice",
   "description": "Automatically push notifications for SSDUT",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -26,7 +26,8 @@
     "service": {
       "required": [
         "database",
-        "cron"
+        "cron",
+        "http"
       ]
     }
   },

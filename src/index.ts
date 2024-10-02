@@ -5,7 +5,7 @@ import sources from "./sources";
 
 export const name = "ssdut-notice";
 
-export const inject = ["database", "cron"];
+export const inject = ["database", "cron", "http"];
 
 export interface Config {
   alert: boolean;
@@ -33,11 +33,10 @@ export interface SSDUTNotice {
   title: string;
 }
 
-async function update(ctx: Context) {
+async function updateNotices(ctx: Context) {
   const noticesFetched: SSDUTNotice[] = [];
   for (const src of sources) {
-    const resp = await fetch(src.url);
-    const dom = new JSDOM(await resp.text()).window.document;
+    const dom = new JSDOM(await ctx.http.get(src.url)).window.document;
     const items = Array.from(dom.querySelectorAll(src.selector))
       .slice(0, 10)
       .map((a: HTMLAnchorElement) => src.praser(a));
@@ -57,13 +56,24 @@ async function update(ctx: Context) {
     }
   }
 
-  const message = noticesFiltered
+  return noticesFetched;
+}
+
+async function pushNotices(ctx: Context) {
+  const notices = await updateNotices(ctx);
+  const message = notices
     .map((notice) => {
       return notice.title + "\n" + notice.url;
     })
     .join("\n\n");
 
-  return message;
+  if (ctx.config.alert && message) {
+    const bot = ctx.bots[`${ctx.config.platform}:${ctx.config.selfId}`];
+    for (const group of ctx.config.groups) {
+      bot.sendMessage(group, message);
+    }
+  }
+  return notices.length;
 }
 
 export function apply(ctx: Context, config: Config) {
@@ -73,14 +83,8 @@ export function apply(ctx: Context, config: Config) {
     title: "string",
   });
 
-  ctx.cron("0 * * * *", async () => {
-    const message = await update(ctx);
-    if (config.alert && message) {
-      const bot = ctx.bots[`${config.platform}:${config.selfId}`];
-      for (const group of config.groups) {
-        bot.sendMessage(group, message);
-      }
-    }
+  ctx.cron("0 * * * *", () => {
+    pushNotices(ctx);
   });
 
   ctx
