@@ -15,7 +15,7 @@ export interface Config {
 }
 
 export const Config: Schema<Config> = Schema.object({
-  alert: Schema.boolean().description("是否开启通知"),
+  alert: Schema.boolean().description("是否开启通知").default(false),
   platform: Schema.string().description("机器人平台"),
   selfId: Schema.string().description("机器人账号"),
   groups: Schema.array(Schema.string()).description("通知群组"),
