@@ -56,7 +56,7 @@ async function updateNotices(ctx: Context) {
     }
   }
 
-  return noticesFetched;
+  return noticesFiltered;
 }
 
 async function pushNotices(ctx: Context) {
@@ -107,4 +107,13 @@ export function apply(ctx: Context, config: Config) {
 
       return message;
     });
+
+  ctx.command("ssdut-notice.update", "更新大工开发区通知").action(async () => {
+    const length = await pushNotices(ctx);
+    if (length) {
+      return `已更新 ${length} 条通知`;
+    } else {
+      return `没有新通知`;
+    }
+  });
 }
