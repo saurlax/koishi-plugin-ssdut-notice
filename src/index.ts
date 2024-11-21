@@ -1,7 +1,7 @@
 import { Context, Schema } from "koishi";
 import {} from "koishi-plugin-cron";
 import { JSDOM } from "jsdom";
-import sources from "./sources";
+import sources, { SSDUTNotice } from "./sources";
 
 export const name = "ssdut-notice";
 
@@ -25,12 +25,6 @@ declare module "koishi" {
   interface Tables {
     "ssdut-notice": SSDUTNotice;
   }
-}
-
-export interface SSDUTNotice {
-  id: number;
-  url: string;
-  title: string;
 }
 
 async function updateNotices(ctx: Context) {
