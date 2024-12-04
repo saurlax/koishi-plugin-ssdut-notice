@@ -2,6 +2,7 @@ import { Context, Schema } from "koishi";
 import {} from "koishi-plugin-cron";
 import { JSDOM } from "jsdom";
 import sources, { SSDUTNotice } from "./sources";
+import url from "url";
 
 export const name = "ssdut-notice";
 
@@ -33,7 +34,11 @@ async function updateNotices(ctx: Context) {
     const dom = new JSDOM(await ctx.http.get(src.url)).window.document;
     const items = Array.from(dom.querySelectorAll(src.selector))
       .slice(0, 10)
-      .map((a: HTMLAnchorElement) => src.praser(a));
+      .map((a: HTMLAnchorElement) => {
+        const notice = src.praser(a);
+        notice.url = url.resolve(src.url, notice.url);
+        return notice;
+      });
 
     noticesFetched.push(...items);
   }
@@ -47,7 +52,6 @@ async function updateNotices(ctx: Context) {
     if (noticesStored.length === 0) {
       await ctx.database.create("ssdut-notice", notice);
       noticesFiltered.push(notice);
-      ctx.logger.info(`${notice.url} ${notice.title}`);
     }
   }
 

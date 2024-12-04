@@ -1,3 +1,5 @@
+import url from "url";
+
 export interface SSDUTNotice {
   id: number;
   url: string;
@@ -22,7 +24,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://teach.dlut.edu.cn"),
+        url: a.href,
         title: a.title,
       };
     },
@@ -34,7 +36,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        url: a.href,
         title: a.querySelector("h2").textContent,
       };
     },
@@ -46,7 +48,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        url: a.href,
         title: a.querySelector("h2").textContent,
       };
     },
@@ -58,7 +60,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        url: a.href,
         title: a.querySelector("h2").textContent,
       };
     },
@@ -70,7 +72,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        url: a.href,
         title: a.querySelector("h2").textContent,
       };
     },
@@ -82,7 +84,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        url: a.href,
         title: a.querySelector("h2").textContent,
       };
     },
@@ -94,7 +96,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        url: a.href,
         title: a.querySelector("h2").textContent,
       };
     },
@@ -106,7 +108,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://jxyxbzzx.dlut.edu.cn"),
+        url: a.href,
         title: a.textContent,
       };
     },
@@ -118,7 +120,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://eda.dlut.edu.cn"),
+        url: a.href,
         title: a.title,
       };
     },
@@ -130,7 +132,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://eda.dlut.edu.cn"),
+        url: a.href,
         title: a.title,
       };
     },
@@ -142,7 +144,7 @@ const sources: NoticeSource[] = [
     praser: (a) => {
       return {
         id: genid(),
-        url: a.href.replace("..", "https://eda.dlut.edu.cn"),
+        url: a.href,
         title: a.title,
       };
     },
