@@ -47,6 +47,7 @@ async function updateNotices(ctx: Context) {
     if (noticesStored.length === 0) {
       await ctx.database.create("ssdut-notice", notice);
       noticesFiltered.push(notice);
+      ctx.logger.info(`${notice.url} ${notice.title}`);
     }
   }
 

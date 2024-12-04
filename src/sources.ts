@@ -28,26 +28,74 @@ const sources: NoticeSource[] = [
     },
   },
   {
-    // 软院本科生通知
-    url: "https://ss.dlut.edu.cn/index/bkstz.htm",
-    selector: ".c_hzjl_list1 ul li a",
+    // 软件学院-本科生通知
+    url: "https://ss.dlut.edu.cn/rcpy/bkspy/bkstz.htm",
+    selector: ".list04 .item a",
     praser: (a) => {
       return {
         id: genid(),
         url: a.href.replace("..", "https://ss.dlut.edu.cn"),
-        title: a.title,
+        title: a.querySelector("h2").textContent,
       };
     },
   },
   {
-    // 软院合作交流
-    url: "https://ss.dlut.edu.cn/hzjl/zytz.htm",
-    selector: ".c_hzjl_list1 li a:nth-child(2)",
+    // 软件学院-创新实践-活动公告
+    url: "https://ss.dlut.edu.cn/rcpy/cxsj/hdtz.htm",
+    selector: ".list04 .item a",
     praser: (a) => {
       return {
         id: genid(),
         url: a.href.replace("..", "https://ss.dlut.edu.cn"),
-        title: a.title,
+        title: a.querySelector("h2").textContent,
+      };
+    },
+  },
+  {
+    // 软件学院-国际交流
+    url: "https://ss.dlut.edu.cn/gjhzjl/gjjl.htm",
+    selector: ".list04 .item a",
+    praser: (a) => {
+      return {
+        id: genid(),
+        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        title: a.querySelector("h2").textContent,
+      };
+    },
+  },
+  {
+    // 软件学院-国际交流-通知公告
+    url: "https://ss.dlut.edu.cn/gjhzjl/tzgg.htm",
+    selector: ".list04 .item a",
+    praser: (a) => {
+      return {
+        id: genid(),
+        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        title: a.querySelector("h2").textContent,
+      };
+    },
+  },
+  {
+    // 软件学院-学生工作-通知公告
+    url: "https://ss.dlut.edu.cn/xsgz/tzgg.htm",
+    selector: ".list04 .item a",
+    praser: (a) => {
+      return {
+        id: genid(),
+        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        title: a.querySelector("h2").textContent,
+      };
+    },
+  },
+  {
+    // 软件学院-学生工作-学生活动
+    url: "https://ss.dlut.edu.cn/xsgz/xshd.htm",
+    selector: ".list04 .item a",
+    praser: (a) => {
+      return {
+        id: genid(),
+        url: a.href.replace("..", "https://ss.dlut.edu.cn"),
+        title: a.querySelector("h2").textContent,
       };
     },
   },
@@ -59,7 +107,7 @@ const sources: NoticeSource[] = [
       return {
         id: genid(),
         url: a.href.replace("..", "https://jxyxbzzx.dlut.edu.cn"),
-        title: a.innerHTML,
+        title: a.textContent,
       };
     },
   },
